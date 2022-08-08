@@ -1,7 +1,7 @@
 const router = require("express").Router();
 const Notes = require("../models/notes.model");
 const { studentAccess } = require("../middleware/accessManager");
-const validation = require("../utils/validation.util").default;
+const validation = require("../utils/validation.util");
 
 /* The below code is a route handler for the /create route. It is used to create a new note. */
 router.post("/create", studentAccess, async (req, res) => {

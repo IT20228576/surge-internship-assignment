@@ -4,7 +4,7 @@ const crypto = require("crypto");
 const Email = require("../utils/email.util");
 const bcrypt = require("bcryptjs");
 const { firstTimeAccess, adminAccess } = require("../middleware/accessManager");
-const validation = require("../utils/validation.util").default;
+const validation = require("../utils/validation.util");
 
 /* The below code is a route handler for the /create route. It is used to create a new User. */
 router.post("/create", adminAccess, async (req, res) => {
@@ -132,6 +132,23 @@ router.get("/all", adminAccess, async (req, res) => {
 
     /* Sending the users object to the client. */
     res.json(users);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send();
+  }
+});
+
+/* This is a route handler for the / route. It is used to get current loggedin user. */
+router.get("/own", firstTimeAccess, async (req, res) => {
+  try {
+    /* Getting the user id from the request body. */
+    const id = req.body.user;
+
+    /* Finding current user in the database. */
+    const user = await Users.findById(id);
+
+    /* Sending the users object to the client. */
+    res.json(user);
   } catch (err) {
     console.error(err);
     res.status(500).send();
