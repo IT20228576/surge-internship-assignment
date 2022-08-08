@@ -3,10 +3,10 @@ const Users = require("../models/users.model");
 const crypto = require("crypto");
 const Email = require("../utils/email.util");
 const bcrypt = require("bcryptjs");
-const { firstTimeAccess } = require("../middleware/accessManager");
+const { firstTimeAccess, adminAccess } = require("../middleware/accessManager");
 
 /* The below code is a route handler for the /create route. It is used to create a new User. */
-router.post("/create", async (req, res) => {
+router.post("/create", adminAccess, async (req, res) => {
   try {
     /* Destructuring the request body. */
     const { firstName, lastName, email, dateOfBirth, mobile, accountType } =
@@ -45,7 +45,7 @@ router.post("/create", async (req, res) => {
     await Email.sendVerification(savedUser.email, oneTimePassword);
 
     /* Sending a response to the client. */
-    res.status(201).send({ Message: "Successfully created new user" });
+    res.status(201).send({ Message: "Successfully created a new user" });
   } catch (err) {
     console.error(err);
     res.status(500).send(err);
@@ -77,7 +77,16 @@ router.put("/register", firstTimeAccess, async (req, res) => {
     }).exec();
 
     /* Sending a response to the client. */
-    res.status(201).send({ Message: "Successfully registered" });
+
+    /* Deleting the cookie. */
+    res
+      .cookie("token", "", {
+        httpOnly: true,
+        expires: new Date(0),
+        secure: true,
+        sameSite: "none",
+      })
+      .send({ Message: "Successfully registered, Please log in." });
   } catch (err) {
     console.error(err);
     res.status(500).send(err);
@@ -85,7 +94,7 @@ router.put("/register", firstTimeAccess, async (req, res) => {
 });
 
 /* This is a route handler for the / route. It is used to get all the users. */
-router.get("/", async (req, res) => {
+router.get("/", adminAccess, async (req, res) => {
   try {
     /* Finding all the users in the database. */
     const users = await Users.find();

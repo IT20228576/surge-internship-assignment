@@ -37,6 +37,7 @@ async function firstTimeAccess(req, res, next) {
     if (!result || result.status === true) {
       return res.status(401).json({ errorMessage: "Unauthorized" });
     }
+
     req.body.user = result;
 
     next();
@@ -46,4 +47,58 @@ async function firstTimeAccess(req, res, next) {
   }
 }
 
-module.exports = { firstTimeAccess };
+/**
+ * It checks if the token is valid and if it is a Admin user, it adds the user to the request body and calls the
+ * next function
+ * @param req - The request object
+ * @param res - The response object
+ * @param next - The next middleware function in the stack.
+ * @returns The result of the checkToken function.
+ */
+async function adminAccess(req, res, next) {
+  try {
+    const result = await checkToken(req);
+
+    if (!result || result.status === false || !result.accountType === "Admin") {
+      return res.status(401).json({ errorMessage: "Unauthorized" });
+    }
+
+    req.body.user = result;
+
+    next();
+  } catch (err) {
+    console.error(err);
+    res.status(401).json({ errorMessage: "Unauthorized" });
+  }
+}
+
+/**
+ * It checks if the token is valid and if it is a Student user, it adds the user to the request body and calls the
+ * next function
+ * @param req - The request object
+ * @param res - The response object
+ * @param next - The next middleware function in the stack.
+ * @returns The result of the checkToken function.
+ */
+async function studentAccess(req, res, next) {
+  try {
+    const result = await checkToken(req);
+
+    if (
+      !result ||
+      result.status === false ||
+      !result.accountType === "Student"
+    ) {
+      return res.status(401).json({ errorMessage: "Unauthorized" });
+    }
+
+    req.body.user = result;
+
+    next();
+  } catch (err) {
+    console.error(err);
+    res.status(401).json({ errorMessage: "Unauthorized" });
+  }
+}
+
+module.exports = { firstTimeAccess, adminAccess, studentAccess };
