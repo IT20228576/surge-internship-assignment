@@ -3,10 +3,11 @@ const passwordComplexity = require("joi-password-complexity");
 
 /* A schema for validating the create user form. */
 const createUserSchema = Joi.object({
-  firstName: Joi.string().min(2).max(15).label("First Name"),
-  lastName: Joi.string().min(2).max(15).label("Last Name"),
-  dateOfBirth: Joi.string().label("Date Of Birth"),
+  firstName: Joi.string().allow("").max(15).label("First Name"),
+  lastName: Joi.string().allow("").max(15).label("Last Name"),
+  dateOfBirth: Joi.string().allow("").label("Date Of Birth"),
   mobile: Joi.string()
+    .allow("")
     .length(10)
     .pattern(/^[0-9]+$/)
     .label("Mobile"),

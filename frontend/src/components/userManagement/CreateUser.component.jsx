@@ -1,16 +1,17 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "../form.css";
 
-const Register = () => {
+const CreateUser = () => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [dateOfBirth, setDateOfBirth] = useState("");
   const [mobile, setMobile] = useState("");
-  const [password, setPassword] = useState("");
-  const [passwordVerify, setPasswordVerify] = useState("");
+  const [accountType, setAccountType] = useState("Student");
+
+  const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
 
@@ -18,72 +19,94 @@ const Register = () => {
    * When the user clicks the submit button, prevent the default action, then send a POST request to the
    * server with the user's email and password, and if successful, navigate to the home page.
    */
-  const register = async (e) => {
+  const createUser = async (e) => {
     e.preventDefault();
     try {
       /* Creating an object with the email and password. */
-      const RegisterData = {
+      const CreateUserData = {
         firstName,
         lastName,
         email,
         dateOfBirth,
         mobile,
-        password,
-        passwordVerify,
+        accountType,
       };
-      console.log(RegisterData);
+      console.log(CreateUserData);
 
-      const result = await axios.put(
-        "http://localhost:8000/users/register",
-        RegisterData
+      setLoading(true);
+
+      const result = await axios.post(
+        "http://localhost:8000/users/create",
+        CreateUserData
       );
 
       console.log(result);
 
-      if (result?.status === 200) {
-        alert("Registration successful ! Please login to continue.");
+      if (result?.status === 201) {
+        setLoading(false);
+        alert(result?.data?.Message);
         localStorage.removeItem("type");
         localStorage.removeItem("status");
         navigate("/");
         window.location.reload();
       }
     } catch (err) {
+      setLoading(false);
       console.error(err?.response?.data?.errorMessage);
       alert(err?.response?.data?.errorMessage);
     }
   };
 
-  const getUser = async () => {
-    const user = await axios.get("http://localhost:8000/users/own");
-    if (user.data.dateOfBirth) {
-      const dobEdited = new Date(user?.data?.dateOfBirth)
-        .toISOString()
-        .substring(0, 10);
-      setDateOfBirth(dobEdited);
-    }
-
-    if (user?.data?.firstName) setFirstName(user?.data?.firstName);
-    if (user?.data?.lastName) setLastName(user?.data?.lastName);
-    if (user?.data?.email) setEmail(user?.data?.email);
-    if (user?.data?.mobile) setMobile(user?.data?.mobile);
-  };
-
-  useEffect(() => {
-    getUser();
-  }, []);
-
   return (
     <div className="main">
       <div className="sub-main">
-        <h1>Register</h1>
+        <h1>Create User</h1>
         <hr />
-        <form onSubmit={register}>
+        <form onSubmit={createUser}>
+          <div>
+            <label>E-mail *</label>
+            <input
+              type="text"
+              placeholder="E-mail"
+              required
+              onChange={(e) => setEmail(e.target.value)}
+              value={email}
+              className="form-input"
+            />
+          </div>
+          <div className="form-radio-space">
+            <label>Account Type * </label>
+            <span
+              onChange={(e) => setAccountType(e.target.value)}
+              value={accountType}
+            >
+              <span className="form-radio">
+                <input
+                  className="form-check-input"
+                  defaultChecked
+                  type="radio"
+                  value="Student"
+                  name="accountType"
+                />
+                Student
+              </span>
+              <span className="form-radio">
+                <input
+                  className="form-check-input"
+                  type="radio"
+                  value="Admin"
+                  name="accountType"
+                />
+                Admin
+              </span>
+            </span>
+          </div>
+          <hr />
           <div>
             <label>First Name</label>
             <input
               type="text"
               placeholder="First Name"
-              required
               onChange={(e) => setFirstName(e.target.value)}
               value={firstName}
               className="form-input"
@@ -94,7 +117,6 @@ const Register = () => {
             <input
               type="text"
               placeholder="Last Name"
-              required
               onChange={(e) => setLastName(e.target.value)}
               value={lastName}
               className="form-input"
@@ -105,7 +127,6 @@ const Register = () => {
             <input
               type="date"
               placeholder="Date Of Birth"
-              required
               onChange={(e) => setDateOfBirth(e.target.value)}
               value={dateOfBirth}
               className="form-input"
@@ -117,48 +138,25 @@ const Register = () => {
               type="text"
               placeholder="Mobile"
               maxLength="10"
-              required
               onChange={(e) => setMobile(e.target.value)}
               value={mobile}
               className="form-input"
             />
           </div>
           <div>
-            <label>E-mail</label>
-            <input
-              type="text"
-              placeholder="E-mail"
-              disabled
-              onChange={(e) => setEmail(e.target.value)}
-              value={email}
-              className="form-input"
-            />
-          </div>
-          <div>
-            <label>Password</label>
-            <input
-              type="password"
-              placeholder="Password"
-              required
-              onChange={(e) => setPassword(e.target.value)}
-              value={password}
-              className="form-input"
-            />
-          </div>
-          <div>
-            <label>Password Verify</label>
-            <input
-              type="password"
-              placeholder="Password Verify"
-              required
-              onChange={(e) => setPasswordVerify(e.target.value)}
-              value={passwordVerify}
-              className="form-input"
-            />
-          </div>
-          <div>
             <button className="button" type="submit">
-              Register
+              {loading ? (
+                <>
+                  <span
+                    class="spinner-border spinner-border-m"
+                    role="status"
+                    aria-hidden="true"
+                  ></span>
+                  <span class="sr-only">Creating...</span>
+                </>
+              ) : (
+                "Create User"
+              )}
             </button>
           </div>
         </form>
@@ -167,4 +165,4 @@ const Register = () => {
   );
 };
 
-export default Register;
+export default CreateUser;
