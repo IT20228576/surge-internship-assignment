@@ -4,16 +4,17 @@ const crypto = require("crypto");
 const Email = require("../utils/email.util");
 const bcrypt = require("bcryptjs");
 const { firstTimeAccess, adminAccess } = require("../middleware/accessManager");
+const validation = require("../utils/validation.util");
+
 
 /* The below code is a route handler for the /create route. It is used to create a new User. */
 router.post("/create", adminAccess, async (req, res) => {
   try {
-    /* Destructuring the request body. */
-    const { firstName, lastName, email, dateOfBirth, mobile, accountType } =
-      req.body;
+    /* Validating the request body. */
+    const validated = await validation.createUserSchema.validateAsync(req.body);
 
     /* Checking if the email is already in the database. */
-    const user = await Users.findOne({ email: email });
+    const user = await Users.findOne({ email: validated.email });
     if (user)
       return res.status(400).json({
         errorMessage: "An account with this email already exists.",
@@ -29,13 +30,13 @@ router.post("/create", adminAccess, async (req, res) => {
     // save a new user account to the db
     const newUser = new Users({
       id: id,
-      firstName: firstName,
-      lastName: lastName,
-      email: email,
-      dateOfBirth: dateOfBirth,
-      mobile: mobile,
+      firstName: validated.firstName,
+      lastName: validated.lastName,
+      email: validated.email,
+      dateOfBirth: validated.dateOfBirth,
+      mobile: validated.mobile,
       password: hashedPassword,
-      accountType: accountType,
+      accountType: validated.accountType,
     });
 
     /* Saving the new user to the database. */
@@ -47,31 +48,36 @@ router.post("/create", adminAccess, async (req, res) => {
     /* Sending a response to the client. */
     res.status(201).send({ Message: "Successfully created a new user" });
   } catch (err) {
-    console.error(err);
-    res.status(500).send(err);
+    if (err.isJoi === true) {
+      console.error(err);
+      return res.status(422).send({ errorMessage: err.details[0].message });
+    } else {
+      res.json(false);
+      console.error(err);
+      res.status(500).send(err);
+    }
   }
 });
 
 /* The below code is a route handler for the /register route. It is used to register new User. */
 router.put("/register", firstTimeAccess, async (req, res) => {
   try {
-    /* Destructuring the request body. */
-    const { firstName, lastName, email, dateOfBirth, mobile, password } =
-      req.body;
+    /* Validating the request body. */
+    const validated = await validation.registerUserSchema.validateAsync(req.body);
 
     // hash the password
     const salt = await bcrypt.genSalt();
-    const hashedPassword = await bcrypt.hash(password, salt);
+    const hashedPassword = await bcrypt.hash(validated.password, salt);
 
     const id = req.body.user;
 
     // save a new user account to the db
     await Users.findByIdAndUpdate(id, {
-      firstName: firstName,
-      lastName: lastName,
-      email: email,
-      dateOfBirth: dateOfBirth,
-      mobile: mobile,
+      firstName: validated.firstName,
+      lastName: validated.lastName,
+      email: validated.email,
+      dateOfBirth: validated.dateOfBirth,
+      mobile: validated.mobile,
       status: true,
       password: hashedPassword,
     }).exec();
@@ -88,13 +94,19 @@ router.put("/register", firstTimeAccess, async (req, res) => {
       })
       .send({ Message: "Successfully registered, Please log in." });
   } catch (err) {
-    console.error(err);
-    res.status(500).send(err);
+    if (err.isJoi === true) {
+      console.error(err);
+      return res.status(422).send({ errorMessage: err.details[0].message });
+    } else {
+      res.json(false);
+      console.error(err);
+      res.status(500).send(err);
+    }
   }
 });
 
 /* This is a route handler for the / route. It is used to get all the users. */
-router.get("/", adminAccess, async (req, res) => {
+router.get("/users", adminAccess, async (req, res) => {
   try {
     /* Finding all the users in the database. */
     const users = await Users.find();

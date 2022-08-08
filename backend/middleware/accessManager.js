@@ -58,11 +58,11 @@ async function firstTimeAccess(req, res, next) {
 async function adminAccess(req, res, next) {
   try {
     const result = await checkToken(req);
-
-    if (!result || result.status === false || !result.accountType === "Admin") {
-      return res.status(401).json({ errorMessage: "Unauthorized" });
+    
+    if (!result || result.status === false || result.accountType !== "Admin") {
+        return res.status(401).json({ errorMessage: "Unauthorized" });
     }
-
+    
     req.body.user = result;
 
     next();
@@ -87,7 +87,7 @@ async function studentAccess(req, res, next) {
     if (
       !result ||
       result.status === false ||
-      !result.accountType === "Student"
+      result.accountType !== "Student"
     ) {
       return res.status(401).json({ errorMessage: "Unauthorized" });
     }
