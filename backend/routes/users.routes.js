@@ -19,7 +19,9 @@ router.post("/create", adminAccess, async (req, res) => {
         errorMessage: "An account with this email already exists.",
       });
 
+    /* Generating a random string of length 10. */
     const id = Math.random().toString(8).substring(5, 15);
+    /* Generating a random string of length 10. */
     const oneTimePassword = crypto.randomBytes(10).toString("hex");
 
     // hash the password
@@ -70,9 +72,10 @@ router.put("/register", firstTimeAccess, async (req, res) => {
     const salt = await bcrypt.genSalt();
     const hashedPassword = await bcrypt.hash(validated.password, salt);
 
+    /* Getting the user id from the request body. */
     const id = req.body.user;
 
-    // save a new user account to the db
+    // save user details to the db
     await Users.findByIdAndUpdate(id, {
       firstName: validated.firstName,
       lastName: validated.lastName,
@@ -109,8 +112,11 @@ router.put("/register", firstTimeAccess, async (req, res) => {
 /* This is a route handler for the / route. It is used to get all the users. */
 router.get("/users", adminAccess, async (req, res) => {
   try {
+    /* Destructuring the query parameters. */
     let { page, size } = req.query;
 
+    /* Checking if the page and size query parameters are not present, then it is setting the default
+    values. */
     if (!page) {
       page = 1;
     }

@@ -52,8 +52,15 @@ const loginSchema = Joi.object({
   password: Joi.string().required().label("Password"),
 });
 
+/* This is a schema for validating the create note form. */
+const noteSchema = Joi.object({
+  title: Joi.string().min(3).required().label("title"),
+  description: Joi.string().min(3).required().label("description"),
+}).unknown(true);
+
 module.exports = {
   createUserSchema,
   registerUserSchema,
   loginSchema,
+  noteSchema,
 };
