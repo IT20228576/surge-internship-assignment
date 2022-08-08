@@ -4,7 +4,7 @@ const crypto = require("crypto");
 const Email = require("../utils/email.util");
 const bcrypt = require("bcryptjs");
 const { firstTimeAccess, adminAccess } = require("../middleware/accessManager");
-const validation = require("../utils/validation.util");
+const validation = require("../utils/validation.util").default;
 
 /* The below code is a route handler for the /create route. It is used to create a new User. */
 router.post("/create", adminAccess, async (req, res) => {
