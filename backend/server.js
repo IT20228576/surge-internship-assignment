@@ -2,6 +2,7 @@ const express = require("express");
 const dotenv = require("dotenv");
 const cors = require("cors");
 const mongoose = require("mongoose");
+const cookieParser = require("cookie-parser");
 
 /* Loading the environment variables from the .env file. */
 dotenv.config();
@@ -17,9 +18,13 @@ const app = express();
 const PORT = process.env.PORT || 8000;
 
 /* Starting the server on the port 8000. */
-app.listen(PORT, () =>
-  console.log(`Successfully Server started on : ${PORT}`)
-);
+app.listen(PORT, () => console.log(`Successfully Server started on : ${PORT}`));
+
+/* A middleware that parses the body of the request and makes it available in the req.body property. */
+app.use(express.json());
+
+/* Parsing the cookie and making it available in the req.cookies property. */
+app.use(cookieParser());
 
 /* Allowing the server to accept requests from the client. */
 app.use(
@@ -28,9 +33,6 @@ app.use(
     credentials: true,
   })
 );
-
-/* A middleware that parses the body of the request and makes it available in the req.body property. */
-app.use(express.json());
 
 //
 // ─── CONNECTION TO MONGODB ─────────────────────────────────────────────────────────
@@ -54,5 +56,4 @@ mongoose.connect(
 
 //User management routes
 app.use("/users", require("./routes/users.routes"));
-
-
+app.use("/auth", require("./routes/login.routes"));
