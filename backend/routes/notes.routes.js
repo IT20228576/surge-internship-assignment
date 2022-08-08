@@ -44,7 +44,7 @@ router.post("/create", studentAccess, async (req, res) => {
 });
 
 /* This is a route handler for the / route. It is used to get all the notes of current loggedin users. */
-router.get("/", studentAccess, async (req, res) => {
+router.get("/all", studentAccess, async (req, res) => {
   try {
 /* Destructuring the _id property from the user object in the request body. */
     const { _id } = req.body.user;

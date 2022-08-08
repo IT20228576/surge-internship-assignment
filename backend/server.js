@@ -55,6 +55,6 @@ mongoose.connect(
 //
 
 //User management routes
-app.use(require("./routes/users.routes"));
-app.use("/auth", require("./routes/login.routes"));
+app.use("/users", require("./routes/users.routes"));
+app.use(require("./routes/login.routes"));
 app.use("/notes", require("./routes/notes.routes"));

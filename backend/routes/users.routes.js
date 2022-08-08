@@ -110,7 +110,7 @@ router.put("/register", firstTimeAccess, async (req, res) => {
 });
 
 /* This is a route handler for the / route. It is used to get all the users. */
-router.get("/users", adminAccess, async (req, res) => {
+router.get("/all", adminAccess, async (req, res) => {
   try {
     /* Destructuring the query parameters. */
     let { page, size } = req.query;
