@@ -6,7 +6,6 @@ const bcrypt = require("bcryptjs");
 const { firstTimeAccess, adminAccess } = require("../middleware/accessManager");
 const validation = require("../utils/validation.util");
 
-
 /* The below code is a route handler for the /create route. It is used to create a new User. */
 router.post("/create", adminAccess, async (req, res) => {
   try {
@@ -63,7 +62,9 @@ router.post("/create", adminAccess, async (req, res) => {
 router.put("/register", firstTimeAccess, async (req, res) => {
   try {
     /* Validating the request body. */
-    const validated = await validation.registerUserSchema.validateAsync(req.body);
+    const validated = await validation.registerUserSchema.validateAsync(
+      req.body
+    );
 
     // hash the password
     const salt = await bcrypt.genSalt();
@@ -108,8 +109,21 @@ router.put("/register", firstTimeAccess, async (req, res) => {
 /* This is a route handler for the / route. It is used to get all the users. */
 router.get("/users", adminAccess, async (req, res) => {
   try {
+    let { page, size } = req.query;
+
+    if (!page) {
+      page = 1;
+    }
+    if (!size) {
+      size = 10;
+    }
+
     /* Finding all the users in the database. */
-    const users = await Users.find();
+    const users = await Users.find()
+      .skip((page - 1) * size)
+      .limit(size)
+      .exec();
+
     /* Sending the users object to the client. */
     res.json(users);
   } catch (err) {
