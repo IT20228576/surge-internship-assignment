@@ -45,7 +45,6 @@ correct, it is sending an error message to the user. */
     var expiryTime = new Date(Number(new Date()) + 6 * 60 * 60 * 1000); //after 6 hours cookie will be expire
     res
       .cookie("token", token, {
-        httpOnly: true,
         expires: expiryTime,
         secure: true,
         sameSite: "none",

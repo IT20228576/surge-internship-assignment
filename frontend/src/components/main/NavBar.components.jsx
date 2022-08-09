@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Container, Nav, Navbar } from "react-bootstrap";
 import LogOut from "./Logout.component";
+import Cookies from "js-cookie";
 
 const NavBar = () => {
   const [user, setUser] = useState("");
@@ -9,6 +10,13 @@ const NavBar = () => {
   useEffect(() => {
     setUser(localStorage.getItem("type"));
     setStatus(localStorage.getItem("status"));
+
+    if (Cookies.get("token") === undefined) {
+      localStorage.removeItem("type");
+      localStorage.removeItem("status");
+      setUser(localStorage.getItem("type"));
+      setStatus(localStorage.getItem("status"));
+    }
   }, []);
 
     return (
