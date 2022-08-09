@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Table from "react-bootstrap/esm/Table";
 import axios from "axios";
 import Pagination from "react-bootstrap/Pagination";
-import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 
 const ViewUsers = () => {
@@ -19,6 +18,7 @@ const ViewUsers = () => {
 
   function customerList() {
     /* Returning the data in the form of a table. */
+    // eslint-disable-next-line array-callback-return
     return users.map((current, index) => {
       const name = current.firstName;
       const id = current.id;
