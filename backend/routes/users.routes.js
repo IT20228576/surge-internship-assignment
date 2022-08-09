@@ -129,9 +129,13 @@ router.get("/all", adminAccess, async (req, res) => {
       .skip((page - 1) * size)
       .limit(size)
       .exec();
-
+    
+    /* count total users in the database. */
+    let total = await Users.countDocuments();
+    total = parseInt(total / size+1);
+    
     /* Sending the users object to the client. */
-    res.json(users);
+    res.json({users:users,total:total});
   } catch (err) {
     console.error(err);
     res.status(500).send();

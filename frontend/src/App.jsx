@@ -7,6 +7,7 @@ import Login from "./components/main/Login.component";
 import Navbar from "./components/main/NavBar.components";
 import Register from "./components/main/Register.component";
 import CreateUser from "./components/userManagement/CreateUser.component";
+import ViewUsers from "./components/userManagement/ViewUsers.component";
 
 axios.defaults.withCredentials = true;
 
@@ -35,6 +36,7 @@ const App = () => {
             element={status === false ? <Login /> : <Register />}
           />
           <Route exact path="/create-user" element={<CreateUser />} />
+          <Route exact path="/users" element={<ViewUsers />} />
         </Routes>
       </Router>
     </div>

@@ -48,6 +48,72 @@
   padding: 10px;
   margin: 10px;
 }
+
 .form-radio-space {
   margin: 10px;
+}
+
+.button {
+  width: 380px;
+  height: 50px;
+  margin: 20px;
+  border-radius: 20px;
+  background-color: #03c2fc;
+  color: rgb(0, 0, 0);
+  font-size: 25px;
+  border: none;
+}
+
+.table {
+  text-align: left;
+  border-style: solid;
+}
+
+.list {
+  margin: 50px;
+}
+
+.list-sub-table {
+  justify-content: center;
+  padding: 10px;
+  height: auto;
+  border-radius: 20px;
+  color: rgb(0, 0, 0);
+  box-shadow: 11px 12px 13px 12px rgb(207, 207, 207);
+  background-color: white;
+  font-size: 25px;
+  border: none;
+}
+
+.head {
+  text-align: center;
+  justify-content: center;
+  display: flex;
+  padding-top: 10px;
+}
+
+.search-input {
+  text-align: center;
+  width: 300px;
+  height: 50px;
+  float: right;
+  margin: 10px;
+  border-radius: 5px;
+  box-shadow: inset 0px 0px 5px 0px rgb(202, 197, 197);
+  border: none;
+  outline: none;
+}
+
+.account-button-blue-add {
+  margin: 10px 20px 0px 20px;
+  min-width: 130px;
+  width: auto;
+  height: 50px;
+  float: left;
+  border-radius: 10px;
+  background-color: #03c2fc;
+  box-shadow: inset 0px 0px 5px 0px rgb(15, 81, 224);
+  color: rgb(0, 0, 0);
+  font-size: 19px;
+  border: none;
 }
