@@ -1,10 +1,13 @@
 const mongoose = require("mongoose");
 const Users = require("./models/users.model");
+const dotenv = require("dotenv");
+
+/* Loading the environment variables from the .env file. */
+dotenv.config();
 
 /* Connecting to the MongoDB database. */
-
 mongoose.connect(
-  "mongodb+srv://jay:wan05Og7Kkfky2G4@cluster0.3zo0hdv.mongodb.net/?retryWrites=true&w=majority",
+  process.env.DB_LINK,
   {
     useNewUrlParser: true,
     useUnifiedTopology: true,
