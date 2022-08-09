@@ -9,6 +9,10 @@ import Navbar from "./components/main/NavBar.components";
 import Register from "./components/main/Register.component";
 import CreateUser from "./components/userManagement/CreateUser.component";
 import ViewUsers from "./components/userManagement/ViewUsers.component";
+import ViewNotes from "./components/noteManagement/ViewNotes.component";
+import ViewNote from "./components/noteManagement/ViewNote.component";
+import CreateNote from "./components/noteManagement/CreateNote.component";
+import UpdateNote from "./components/noteManagement/UpdateNote.component";
 
 axios.defaults.withCredentials = true;
 
@@ -38,11 +42,36 @@ const App = () => {
             path="/"
             element={user !== null ? <Home /> : <Login />}
           />
-          <Route
-            exact
-            path="/register"
-            element={status === false ? <Login /> : <Register />}
-          />
+
+          {status === true ? (
+            <>
+              <Route
+                exact
+                path="/register"
+                element={status === false ? <Login /> : <Register />}
+              />
+              <Route exact path="*" element={<Login />} />
+            </>
+          ) : (
+            <>
+            <Route exact path="*" element={<Home />} />
+            </>
+          )}
+
+          {user === null && status !== true ? (
+            <>
+              <Route
+                exact
+                path="/"
+                element={user !== null ? <Home /> : <Login />}
+              />
+              <Route exact path="*" element={<Login />} />
+            </>
+          ) : (
+            <>
+              <Route exact path="*" element={<Home />} />
+            </>
+          )}
 
           {user === "Admin" && status !== true ? (
             <>
@@ -51,11 +80,18 @@ const App = () => {
             </>
           ) : (
             ""
+            )}
+
+          {user === "Student" && status !== true ? (
+            <>
+              <Route exact path="/notes" element={<ViewNotes />} />
+              <Route exact path="/note" element={<ViewNote />} />
+            <Route exact path="/create-note" element={<CreateNote />} />
+            <Route exact path="/update-note" element={<UpdateNote />} />
+            </>
+          ) : (
+            ""
           )}
-
-          {user === "Student" && status !== true ? <></> : ""}
-
-          <Route exact path="*" element={<Login />} />
         </Routes>
       </Router>
     </div>
