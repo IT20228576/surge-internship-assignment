@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node server",
     "test": "jest --verbose",
-    "dev": "nodemon server"
+    "dev": "nodemon server",
+    "seed": "node seeds.js"
   },
   "keywords": [],
   "author": "chirath",

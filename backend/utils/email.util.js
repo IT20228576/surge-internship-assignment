@@ -43,7 +43,7 @@ async function sentEmail(email, subject, text) {
  */
 async function sendVerification(email, password) {
   try {
-    const body = `Verify your email address by login using this credentials. \n\nE-mail : ${email} \nPassword : ${password} \n\nLink : www.google.lk`;
+    const body = `Verify your email address by login using this credentials. \n\nE-mail : ${email} \nPassword : ${password} \n\nLink : http://localhost:3000/`;
     /* Sending an email to the user with a link to verify their email address. */
     return await sentEmail(email, "Email Verification", body);
 
