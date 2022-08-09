@@ -32,12 +32,11 @@ const Register = () => {
         passwordVerify,
       };
 
-     /* Sending a PUT request to the server with the user's details. */
+      /* Sending a PUT request to the server with the user's details. */
       const result = await axios.put(
         "http://localhost:8000/users/register",
         RegisterData
       );
-
 
       /* This is a conditional statement that checks if the status of the response is 200. If it is,
       then it will alert the user that the registration was successful and then it will remove the
@@ -48,7 +47,7 @@ const Register = () => {
         /* Removing the type and status from local storage. */
         localStorage.removeItem("type");
         localStorage.removeItem("status");
-       /* Reloading the page. */
+        /* Reloading the page. */
         navigate("/");
         window.location.reload();
       }
@@ -58,25 +57,27 @@ const Register = () => {
     }
   };
 
-  /* This is a function that is used to get the user's details from the database. */
-  const getUser = async () => {
-    const user = await axios.get("http://localhost:8000/users/own");
-    if (user.data.dateOfBirth) {
-      const dobEdited = new Date(user?.data?.dateOfBirth)
-        .toISOString()
-        .substring(0, 10);
-      setDateOfBirth(dobEdited);
-    }
-
-    /* This is a conditional statement that checks if the user's details are in the database. If they
-    are, then it will set the state of the user's details */
-    if (user?.data?.firstName) setFirstName(user?.data?.firstName);
-    if (user?.data?.lastName) setLastName(user?.data?.lastName);
-    if (user?.data?.email) setEmail(user?.data?.email);
-    if (user?.data?.mobile) setMobile(user?.data?.mobile);
-  };
-
   useEffect(() => {
+    /* This is a function that is used to get the user's details from the database. */
+    const getUser = async () => {
+      try {
+        const user = await axios.get("http://localhost:8000/users/own");
+        if (user?.data?.dateOfBirth) {
+          const dobEdited = new Date(user?.data?.dateOfBirth)
+            .toISOString()
+            .substring(0, 10);
+          setDateOfBirth(dobEdited);
+        }
+        /* This is a conditional statement that checks if the user's details are in the database. If they
+      are, then it will set the state of the user's details */
+        if (user?.data?.firstName) setFirstName(user?.data?.firstName);
+        if (user?.data?.lastName) setLastName(user?.data?.lastName);
+        if (user?.data?.email) setEmail(user?.data?.email);
+        if (user?.data?.mobile) setMobile(user?.data?.mobile);
+      } catch (error) {
+        // console.log(error);
+      }
+    };
     getUser();
   }, []);
 
