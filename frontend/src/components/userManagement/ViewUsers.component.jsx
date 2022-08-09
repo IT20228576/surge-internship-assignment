@@ -22,7 +22,7 @@ const ViewUsers = () => {
       const name = current.firstName;
       const id = current.id;
       const email = current.email;
-      /* Checking if the name contains the search string or if the search string is empty. */
+      /* Checking if the name,id,email contains the search string or if the search string is empty. */
       if (
         name?.toLowerCase().includes(search?.toLowerCase()) ||
         id?.toString().includes(search) ||
@@ -54,11 +54,15 @@ const ViewUsers = () => {
     });
   }
 
+/**
+ * When the user clicks on a row, the user's data is set to the state and the modal is shown.
+ */
   function viewUser(data) {
     setUser(data);
     handleShow();
   }
 
+/* This is the code for the previous button. */
   if (currentPage > 1) {
     items.push(
       <Pagination.Prev
@@ -67,6 +71,8 @@ const ViewUsers = () => {
       />
     );
   }
+
+/* This is the code for the pagination. */
   for (let number = 1; number <= totalPage; number++) {
     items.push(
       <Pagination.Item
@@ -79,6 +85,7 @@ const ViewUsers = () => {
     );
   }
 
+/* This is the code for the next button. */
   if (currentPage < totalPage) {
     items.push(
       <Pagination.Next
@@ -89,11 +96,15 @@ const ViewUsers = () => {
   }
 
   useEffect(() => {
+/**
+ * It gets all the users from the database and sets the users and totalPage state variables.
+ */
     const getall = async () => {
       try {
         const result = await axios.get(
           "http://localhost:8000/users/all?page=" + currentPage
         );
+        /* Setting the users and totalPage state variables. */
         setUsers(result?.data?.users);
         setTotalPage(result?.data?.total);
       } catch (error) {

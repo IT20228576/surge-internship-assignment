@@ -14,25 +14,29 @@ const { state } = useLocation();
   const navigate = useNavigate();
 
   /**
-   * When the user clicks the submit button, prevent the default action, then send a POST request to the
-   * server with the user's email and password, and if successful, navigate to the home page.
+   * When the user clicks the update button, prevent the default action, then send a Put request to the
+   * server with the note's updated data, and if successful, navigate to the home page.
    */
   const UpdateNote = async (e) => {
     e.preventDefault();
     try {
-      /* Creating an object with the email and password. */
+      /* Creating an object with the title and description. */
       const UpdateNoteData = {
         title,
         description,
       };
 
+/* Setting the loading state to true. */
       setLoading(true);
 
+      /* Sending a Put request to the server with the note's updated data. */
       const result = await axios.put(
         "http://localhost:8000/notes/update/" + state._id,
         UpdateNoteData
       );
 
+      /* Checking if the status of the response is 201, if it is, it is setting the loading state to
+      false, alerting the user with the message from the server, and navigating to the home page. */
       if (result?.status === 201) {
         setLoading(false);
         alert(result?.data?.Message);

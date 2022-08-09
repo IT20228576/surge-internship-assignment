@@ -17,7 +17,7 @@ const ViewNotes = () => {
     // eslint-disable-next-line array-callback-return
     return notes.map((current, index) => {
       const title = current.title;
-      /* Checking if the name contains the search string or if the search string is empty. */
+      /* Checking if the title contains the search string or if the search string is empty. */
       if (
         title?.toLowerCase().includes(search?.toLowerCase()) ||
         search === ""
@@ -47,10 +47,15 @@ const ViewNotes = () => {
     });
   }
 
+  /**
+   * When the user clicks on a note, the viewNotes function is called, which navigates to the /note
+   * route, passing the data of the note as a state object.
+   */
   function viewNotes(data) {
     navigate("/note", { state: data });
   }
 
+  /* This is the code for the previous button. */
   if (currentPage > 1) {
     items.push(
       <Pagination.Prev
@@ -59,6 +64,8 @@ const ViewNotes = () => {
       />
     );
   }
+
+  /* This is the code for the pagination buttons. */
   for (let number = 1; number <= totalPage; number++) {
     items.push(
       <Pagination.Item
@@ -71,6 +78,7 @@ const ViewNotes = () => {
     );
   }
 
+  /* This is the code for the next button. */
   if (currentPage < totalPage) {
     items.push(
       <Pagination.Next
@@ -81,15 +89,21 @@ const ViewNotes = () => {
   }
 
   useEffect(() => {
+    /**
+     * "getall" is an async function that uses axios to get data from the server, and then sets the
+     * state of the notes and totalPage variables.
+     */
     const getall = async () => {
       try {
         const result = await axios.get(
           "http://localhost:8000/notes/all?page=" + currentPage
         );
+        /* Setting the state of the notes and totalPage variables. */
         setNotes(result?.data?.notes);
         setTotalPage(result?.data?.total);
       } catch (error) {
         console.error(error);
+        alert(error);
       }
     };
     getall();

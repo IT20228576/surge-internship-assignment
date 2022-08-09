@@ -17,12 +17,12 @@ const CreateUser = () => {
 
   /**
    * When the user clicks the submit button, prevent the default action, then send a POST request to the
-   * server with the user's email and password, and if successful, navigate to the home page.
+   * server with the user's details, and if successful, navigate to the home page.
    */
   const createUser = async (e) => {
     e.preventDefault();
     try {
-      /* Creating an object with the email and password. */
+      /* Creating an object with the user's details. */
       const CreateUserData = {
         firstName,
         lastName,
@@ -32,18 +32,21 @@ const CreateUser = () => {
         accountType,
       };
 
+/* Setting the loading state to true. */
       setLoading(true);
 
+    /* Sending a POST request to the server with the user's details. */
       const result = await axios.post(
         "http://localhost:8000/users/create",
         CreateUserData
       );
 
+/* This is checking if the status code of the response is 201, which means that the user was created
+successfully. If it is, then it sets the loading state to false, displays a message to the user,
+navigates to the home page, and reloads the page. */
       if (result?.status === 201) {
         setLoading(false);
         alert(result?.data?.Message);
-        localStorage.removeItem("type");
-        localStorage.removeItem("status");
         navigate("/");
         window.location.reload();
       }

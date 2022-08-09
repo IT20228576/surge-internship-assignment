@@ -22,17 +22,21 @@ const Login = () => {
         password,
       };
 
+      /* Sending a POST request to the server with the user's email and password. */
       const result = await axios.post("http://localhost:8000/login", loginData);
 
+      /* Checking if the status is true. */
       if (result?.data?.status === true) {
-        if (result?.data?.type) {
-          localStorage.setItem("type", result?.data?.type);
-          localStorage.setItem("status", result?.data?.status);
-        }
+        /* Setting the local storage with the type and status. */
+        localStorage.setItem("type", result?.data?.type);
+        localStorage.setItem("status", result?.data?.status);
+        /* Reloading the page. */
         navigate("/");
         window.location.reload();
-    } else {
+      } else {
+        /* Setting the local storage with the status. */
         localStorage.setItem("status", result?.data?.status);
+        /* Redirecting the user to the register page. */
         navigate("/register");
         window.location.reload();
       }
