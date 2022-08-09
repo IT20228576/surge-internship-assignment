@@ -30,8 +30,8 @@ async function sentEmail(email, subject, text) {
 
     console.log("Email Sent Successfully!");
   } catch (error) {
-    console.log("Email Not Sent!");
-    console.log(error);
+    console.error("Email Not Sent!");
+    console.error(error);
   }
 }
 

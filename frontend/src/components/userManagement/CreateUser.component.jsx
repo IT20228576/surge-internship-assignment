@@ -31,7 +31,6 @@ const CreateUser = () => {
         mobile,
         accountType,
       };
-      console.log(CreateUserData);
 
       setLoading(true);
 
@@ -39,8 +38,6 @@ const CreateUser = () => {
         "http://localhost:8000/users/create",
         CreateUserData
       );
-
-      console.log(result);
 
       if (result?.status === 201) {
         setLoading(false);

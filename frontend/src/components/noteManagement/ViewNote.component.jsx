@@ -14,9 +14,9 @@ const ViewNote = () => {
 
       await axios.delete("http://localhost:8000/notes/delete/" + state._id);
 
-      navigate("/notes");
+      navigate("/");
     } catch (err) {
-      console.log(err);
+      console.error(err);
     }
   };
 

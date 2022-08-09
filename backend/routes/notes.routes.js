@@ -67,8 +67,12 @@ router.get("/all", studentAccess, async (req, res) => {
       .limit(size)
       .exec();
 
+    /* count total notes belongs to current user in the database. */
+    let total = await Notes.countDocuments({ studentId: _id });
+    total = parseInt(total / size + 1);
+
     /* Sending the notes object to the client. */
-    res.json(notes);
+    res.json({ notes: notes , total: total });
   } catch (err) {
     console.error(err);
     res.status(500).send();

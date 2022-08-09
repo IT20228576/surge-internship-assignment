@@ -9,7 +9,7 @@ const ViewNotes = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPage, setTotalPage] = useState(1);
   let items = [];
-  
+
   const navigate = useNavigate();
 
   function customerList() {
@@ -25,9 +25,7 @@ const ViewNotes = () => {
         return (
           <li key={index}>
             <div className="card">
-              <div className="card-header">
-                {current.title}
-              </div>
+              <div className="card-header">{current.title}</div>
               <div className="card-body">
                 <p className="card-text">
                   {current.description?.toString()?.substring(0, 150)}....
@@ -43,6 +41,8 @@ const ViewNotes = () => {
             <br></br>
           </li>
         );
+      } else {
+        return null;
       }
     });
   }
@@ -86,10 +86,10 @@ const ViewNotes = () => {
         const result = await axios.get(
           "http://localhost:8000/notes/all?page=" + currentPage
         );
-        setNotes(result?.data);
+        setNotes(result?.data?.notes);
         setTotalPage(result?.data?.total);
       } catch (error) {
-        console.log(error);
+        console.error(error);
       }
     };
     getall();
@@ -113,9 +113,7 @@ const ViewNotes = () => {
           <h1>Notes</h1>
         </div>
         <hr />
-        <ul>
-        {customerList()}
-        </ul>
+        <ul>{customerList()}</ul>
         <hr />
         <div className="head">
           <Pagination size="lg">{items}</Pagination>

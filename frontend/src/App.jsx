@@ -3,7 +3,6 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import axios from "axios";
 import Cookies from "js-cookie";
 
-import Home from "./components/main/Home.component";
 import Login from "./components/main/Login.component";
 import Navbar from "./components/main/NavBar.components";
 import Register from "./components/main/Register.component";
@@ -17,7 +16,7 @@ import UpdateNote from "./components/noteManagement/UpdateNote.component";
 axios.defaults.withCredentials = true;
 
 const App = () => {
-  const [user, setUser] = useState("");
+  const [user, setUser] = useState(null);
   const [status, setStatus] = useState("");
 
   useEffect(() => {
@@ -37,57 +36,37 @@ const App = () => {
       <Router>
         <Navbar />
         <Routes>
-          <Route
-            exact
-            path="/"
-            element={user !== null ? <Home /> : <Login />}
-          />
-
-          {status === true ? (
+          {user === null ? (
             <>
               <Route
                 exact
                 path="/register"
-                element={status === false ? <Login /> : <Register />}
+                element={status === false ? <Register /> : <Login />}
               />
               <Route exact path="*" element={<Login />} />
-            </>
-          ) : (
-            <>
-            <Route exact path="*" element={<Home />} />
-            </>
-          )}
-
-          {user === null && status !== true ? (
-            <>
-              <Route
-                exact
-                path="/"
-                element={user !== null ? <Home /> : <Login />}
-              />
-              <Route exact path="*" element={<Login />} />
-            </>
-          ) : (
-            <>
-              <Route exact path="*" element={<Home />} />
-            </>
-          )}
-
-          {user === "Admin" && status !== true ? (
-            <>
-              <Route exact path="/users" element={<ViewUsers />} />
-              <Route exact path="/create-user" element={<CreateUser />} />
             </>
           ) : (
             ""
-            )}
+          )}
 
-          {user === "Student" && status !== true ? (
+          {status !== true ? (
             <>
-              <Route exact path="/notes" element={<ViewNotes />} />
-              <Route exact path="/note" element={<ViewNote />} />
-            <Route exact path="/create-note" element={<CreateNote />} />
-            <Route exact path="/update-note" element={<UpdateNote />} />
+              {user === "Admin" && (
+                <>
+                  <Route exact path="/" element={<ViewUsers />} />
+                  <Route exact path="/create-user" element={<CreateUser />} />
+                  <Route exact path="*" element={<ViewUsers />} />
+                </>
+              )}
+              {user === "Student" && (
+                <>
+                  <Route exact path="/" element={<ViewNotes />} />
+                  <Route exact path="/note" element={<ViewNote />} />
+                  <Route exact path="/create-note" element={<CreateNote />} />
+                  <Route exact path="/update-note" element={<UpdateNote />} />
+                  <Route exact path="*" element={<ViewNotes />} />
+                </>
+              )}
             </>
           ) : (
             ""

@@ -31,14 +31,12 @@ const Register = () => {
         password,
         passwordVerify,
       };
-      console.log(RegisterData);
 
       const result = await axios.put(
         "http://localhost:8000/users/register",
         RegisterData
       );
 
-      console.log(result);
 
       if (result?.status === 200) {
         alert("Registration successful ! Please login to continue.");

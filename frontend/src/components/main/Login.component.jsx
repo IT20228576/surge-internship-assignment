@@ -35,7 +35,6 @@ const Login = () => {
         localStorage.setItem("status", result?.data?.status);
         navigate("/register");
         window.location.reload();
-        console.log(result);
       }
     } catch (err) {
       console.error(err.response.data.errorMessage);

@@ -18,7 +18,6 @@ const ViewUsers = () => {
 
   function customerList() {
     /* Returning the data in the form of a table. */
-    // eslint-disable-next-line array-callback-return
     return users.map((current, index) => {
       const name = current.firstName;
       const id = current.id;
@@ -49,14 +48,15 @@ const ViewUsers = () => {
           </tr>
         );
       }
+      else{
+        return null;
+      }
     });
   }
 
   function viewUser(data) {
-    console.log("View User");
     setUser(data);
-    console.log(data);
-   handleShow();
+    handleShow();
   }
 
   if (currentPage > 1) {
@@ -97,7 +97,7 @@ const ViewUsers = () => {
         setUsers(result?.data?.users);
         setTotalPage(result?.data?.total);
       } catch (error) {
-        console.log(error);
+        console.error(error);
       }
     };
     getall();

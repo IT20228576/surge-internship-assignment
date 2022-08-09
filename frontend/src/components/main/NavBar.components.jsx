@@ -28,7 +28,7 @@ const NavBar = () => {
               <Nav className="me-auto">
                 {user === "Admin" && status !== true ? (
                   <>
-                    <Nav.Link href="/users">Users</Nav.Link>
+                    <Nav.Link href="/">Users</Nav.Link>
                   </>
                 ) : (
                   ""
@@ -36,7 +36,7 @@ const NavBar = () => {
 
                 {user === "Student" && status !== true ? (
                   <>
-                    <Nav.Link href="/notes">Notes</Nav.Link>
+                    <Nav.Link href="/">Notes</Nav.Link>
                   </>
                 ) : (
                   ""

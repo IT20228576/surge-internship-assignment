@@ -23,7 +23,6 @@ const CreateNote = () => {
         title,
         description,
       };
-      console.log(CreateNoteData);
 
       setLoading(true);
 
@@ -35,7 +34,7 @@ const CreateNote = () => {
       if (result?.status === 201) {
         setLoading(false);
         alert(result?.data?.Message);
-        navigate("/notes");
+        navigate("/");
       }
     } catch (err) {
       setLoading(false);

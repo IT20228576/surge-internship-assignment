@@ -25,7 +25,6 @@ const { state } = useLocation();
         title,
         description,
       };
-      console.log(UpdateNoteData);
 
       setLoading(true);
 
@@ -37,7 +36,7 @@ const { state } = useLocation();
       if (result?.status === 201) {
         setLoading(false);
         alert(result?.data?.Message);
-        navigate("/notes");
+        navigate("/");
       }
     } catch (err) {
       setLoading(false);
