@@ -134,7 +134,7 @@ const Register = () => {
           <div>
             <label>E-mail</label>
             <input
-              type="text"
+              type="email"
               placeholder="E-mail"
               disabled
               onChange={(e) => setEmail(e.target.value)}

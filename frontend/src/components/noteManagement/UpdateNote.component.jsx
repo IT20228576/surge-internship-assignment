@@ -60,6 +60,7 @@ const { state } = useLocation();
             <input
               type="text"
               placeholder="Title"
+              required
               onChange={(e) => setTitle(e.target.value)}
               value={title}
               className="form-control"
@@ -70,6 +71,7 @@ const { state } = useLocation();
             <textarea
               type="text"
               rows="10"
+              required
               placeholder="Description"
               onChange={(e) => setDescription(e.target.value)}
               value={description}

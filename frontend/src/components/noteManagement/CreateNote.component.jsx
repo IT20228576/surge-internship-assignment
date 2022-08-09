@@ -59,16 +59,18 @@ const CreateNote = () => {
             <input
               type="text"
               placeholder="Title"
+              required
               onChange={(e) => setTitle(e.target.value)}
               value={title}
               className="form-control"
-            />
+              />
           </div>
           <div>
             <label>Description</label>
             <textarea
               type="text"
               rows="10"
+              required
               placeholder="Description"
               onChange={(e) => setDescription(e.target.value)}
               value={description}

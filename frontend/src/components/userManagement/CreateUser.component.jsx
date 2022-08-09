@@ -66,7 +66,7 @@ navigates to the home page, and reloads the page. */
           <div>
             <label>E-mail *</label>
             <input
-              type="text"
+              type="email"
               placeholder="E-mail"
               required
               onChange={(e) => setEmail(e.target.value)}
