@@ -1,26 +1,12 @@
-import { useEffect, useState } from "react";
+import { useContext } from "react";
 import { Container, Nav, Navbar } from "react-bootstrap";
 import LogOut from "./Logout.component";
-import Cookies from "js-cookie";
+
+import AuthContext from "../context/User.context";
 
 const NavBar = () => {
-  const [user, setUser] = useState("");
-  const [status, setStatus] = useState("");
-
-  useEffect(() => {
-    /* Setting the user and status to the localStorage. */
-    setUser(localStorage.getItem("type"));
-    setStatus(localStorage.getItem("status"));
-
-    /* This is checking if the token is undefined, if it is, it removes the type and status from
-    localStorage and sets the user and status to an empty string. */
-    if (Cookies.get("token") === undefined) {
-      localStorage.removeItem("type");
-      localStorage.removeItem("status");
-      setUser("");
-      setStatus("");
-    }
-  }, []);
+/* Destructuring the user and status from the AuthContext. */
+  const { user, status } = useContext(AuthContext);
 
   return (
     <div>
